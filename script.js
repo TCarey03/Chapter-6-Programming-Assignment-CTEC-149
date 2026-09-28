@@ -13,42 +13,37 @@ searchBtn.addEventListener("click", () => {
     searchWord(word);
 });
 
-function searchWord(word) {
+async function searchWord(word) {
     // Clear previous results
     resultContainer.replaceChildren();
 
-    fetch(`https://freedictionaryapi.com/api/v1/entries/en/${word}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Response was not successful");
-            }
+    const response = await fetch(
+        `https://freedictionaryapi.com/api/v1/entries/en/${word}`
+    );
 
-            return response.json();
-        })
-        .then(data => {
-            if (data.entries.length === 0) {
-                resultContainer.textContent = "Word not found";
-                return;
-            }
+    if (!response.ok) {
+        resultContainer.textContent = "Service Down";
+        return;
+    }
 
-            const heading = document.createElement("h2");
-            heading.textContent = data.word;
+    const data = await response.json();
 
-            const list = document.createElement("ul");
+    if (data.entries.length === 0) {
+        resultContainer.textContent = "Word not found";
+        return;
+    }
 
-            data.entries[0].senses.forEach(sense => {
-                const li = document.createElement("li");
-                li.textContent = sense.definition;
-                list.appendChild(li);
-            });
+    const heading = document.createElement("h2");
+    heading.textContent = data.word;
 
-            resultContainer.appendChild(heading);
-            resultContainer.appendChild(list);
-        })
-        .catch(error => {
-            resultContainer.textContent =
-                "Error: Could not connect to the dictionary service";
+    const list = document.createElement("ul");
 
-            console.log(error);
-        });
+    data.entries[0].senses.forEach(sense => {
+        const li = document.createElement("li");
+        li.textContent = sense.definition;
+        list.appendChild(li);
+    });
+
+    resultContainer.appendChild(heading);
+    resultContainer.appendChild(list);
 }
