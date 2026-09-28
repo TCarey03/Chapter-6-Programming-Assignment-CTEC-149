@@ -27,3 +27,13 @@ How does using the Fetch API to update only a portion of the page improve the Us
 Using the Fetch API allows the application to get new dictionary information without refreshing the entire webpage. Only the results section needs to be updated when the user searches for a word.
 
 This makes the application feel faster and smoother because the user does not have to wait for the entire page to reload. The input field and other parts of the page can stay the same while the new definition is displayed.
+
+---------------------------
+
+Phase 4
+
+Do you prefer using then() calls or the async/await syntax here? What is easier for you to read and work through?
+
+I prefer the async/await syntax because I think it is easier to read. The code runs in a more straightforward order, so I can see that the program first waits for the fetch response and then waits for the JSON data.
+
+The .then() syntax works, but it requires following the Promise chain from one then() to the next. With async/await, the code looks more like normal step-by-step instructions, which makes it easier for me to understand.
